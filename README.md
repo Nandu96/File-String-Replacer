@@ -7,8 +7,10 @@ It also has a "code_mode" option which can be used to replace the lower case ,up
 
 ## Usage
 
+To execute the binary:
+
 ```go
-./template_enabler "path_to_reference_folder" "path_to_replacement_pairs_file" code_mode
+./fsr "path_to_reference_folder" "path_to_replacement_pairs_file" code_mode
 ```
 
 Where code_mode expects a boolean value if you want to enrich your replacement pairs file for different cases of same words.
