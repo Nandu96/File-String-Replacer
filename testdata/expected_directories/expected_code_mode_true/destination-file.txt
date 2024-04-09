@@ -1,0 +1,4 @@
+This is the destination content of NewWord
+This is the destination content of NEWWORD
+This is the destination content of newword
+This is the destination content of newword_is_awesome

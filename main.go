@@ -22,6 +22,11 @@ func main() {
 	replacementPair := os.Args[2]
 	inputCodeMode := os.Args[3]
 
+	performStringReplacement(srcPath, replacementPair, destPath, inputCodeMode)
+}
+
+func performStringReplacement(srcPath, replacementPair, destPath, inputCodeMode string) {
+
 	isCodeMode, err := strconv.ParseBool(inputCodeMode)
 	if err != nil {
 		fmt.Println("Error: Third argument should be 'true' or 'false' to indicate code_mode")
@@ -39,12 +44,12 @@ func main() {
 		return
 	}
 	defer keyValueFile.Close()
+
 	scanner := bufio.NewScanner(keyValueFile)
 	for scanner.Scan() {
 		line := scanner.Text()
 		words := strings.Split(line, ",")
 
-		// Ensure there are exactly two words per line in replacement pairs file
 		if len(words) == 2 {
 			keyValuePairs[words[0]] = words[1]
 		} else {
@@ -55,12 +60,13 @@ func main() {
 		fmt.Println("Error reading file:", err)
 		return
 	}
+
 	if isCodeMode {
 		fmt.Println("Code mode is activated. Enriching the template map!")
 		keyValuePairs = enrichKeyValueMap(keyValuePairs)
 	}
-	err = duplicateFolderStructure(srcPath, destPath, keyValuePairs)
 
+	err = duplicateFolderStructure(srcPath, destPath, keyValuePairs)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return

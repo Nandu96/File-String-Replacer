@@ -1,0 +1,4 @@
+This is the source content of NewWord
+This is the source content of TEMPLATE
+This is the source content of template
+This is the source content of template_is_awesome

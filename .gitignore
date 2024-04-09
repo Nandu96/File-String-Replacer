@@ -1,2 +1,8 @@
 .DS_STORE
 fsr
+*.zip
+
+.env
+
+.idea
+.vscode/

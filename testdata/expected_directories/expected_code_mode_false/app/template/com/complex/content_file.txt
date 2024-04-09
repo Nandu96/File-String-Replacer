@@ -1,0 +1,7 @@
+This file contains TheNewString in multiple formats like TheNewString, stringtoreplace, stringToReplace and STRINGTOREPLACE.
+
+All these strings will be replaced only if code_mode is "true".
+
+Also, I want the below line to be replaced:
+
+I could do this all day!

@@ -1,0 +1,5 @@
+Source,Destination
+Template,NewWord
+App,Application
+StringToReplace,TheNewString
+I am Iron-man!,I could do this all day!
