@@ -7,10 +7,26 @@ It also has a "code_mode" option which can be used to replace the lower case ,up
 
 ## Usage
 
-To execute the binary:
+### Option 1:
+
+Download and execute the binary from the [Releases](https://github.com/Nandu96/File-String-Replacer/releases) corresponding to the system being used: 
 
 ```go
+// example 1 - macOs
+
 ./fsr "path/to/reference/folder" "path/to/replacement_pairs_file" code_mode
+
+// example 2 - Windows
+
+.\fsr.exe "path\to\reference\folder" "path\to\replacement_pairs_file" code_mode
+```
+
+### Option 2:
+
+If you have go installed, you can directly run the main.go file by passing the arguments:
+
+```go
+go run main.go "path/to/reference/folder" "path/to/replacement_pairs_file" code_mode
 ```
 
 A sample replacement_pairs_file contains the word to replace and the new word separated by `,` character with `no spaces after it`.
