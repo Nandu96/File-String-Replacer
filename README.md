@@ -1,11 +1,12 @@
-# Template Enabler
-This CLI tool can be used to generate files and folders using a reference, similar to how a template is used to generate fils, but much easier. 
+# File String Replacer
 
-It expects as input, the reference folder path and a text file containing the words to be replaced and the corresponding new word in "," separated pair in each line. The tool replaces the occurance of the word in the contents of each file and also the file and folder names themselves and yes, you can have as many nested folders as you want. 
-
-It also has a "code_mode" option which can be used to replace the lower case ,upper case and camel case occurances of all the entries in the replace pairs file without having to repeat them!
+This CLI tool can be used to generate files and folders using a reference, similar to how a template is used, but much easier. It replicates the given project and replaces ocurrences of the strings you input with the corresponding string of your choice. This is done inside file contents, file names and folder names as well. 
 
 ## Usage
+
+The script expects as input, the reference folder path and a text file containing the words to be replaced and the corresponding new word in "," separated pair in each line. The tool replaces the occurance of the word in the contents of each file and also the file and folder names themselves and yes, you can have as many nested folders as you want. 
+
+It also has a "code_mode" option which can be used to replace the lower case ,upper case and camel case occurances of all the entries in the replace pairs file without having to repeat them!
 
 ### Option 1:
 
@@ -29,7 +30,9 @@ If you have go installed, you can directly run the main.go file by passing the a
 go run main.go "path/to/reference/folder" "path/to/replacement_pairs_file" code_mode
 ```
 
+
 A sample replacement_pairs_file contains the word to replace and the new word separated by `,` character with `no spaces after it`.
+
 
 code_mode has 2 valid options:
 
@@ -40,9 +43,10 @@ code_mode has 2 valid options:
 
 ```
 NOTE:
-1. Make sure the folder contents have proper read accesses. 
+1. Make sure the folder contents have proper read access. 
 2. In addition to file contents, file names and folder names are also replaced in case a match is found.
 ```
+
 
 ## Example
 
@@ -55,6 +59,7 @@ MyExistingAppName,MyNewAppName
 I want this whole sentence replaced!,This is the sentence I want to replace it with!
 ```
 
+
 ### code_mode Usage explained:
 
 When code_mode is used as true, in addition to normally replacing the pairs, the tool replaces the below occurances of the example as well:
@@ -63,6 +68,7 @@ MYEXISTINGWORD -> MYNEWWORD
 myexistingword -> mynewword
 myExistingWord -> myNewWord //useful for changing variable names as well.
 ```
+
 
 ## Limitations
 
