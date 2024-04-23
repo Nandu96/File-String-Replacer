@@ -23,16 +23,18 @@ func teardown() {
 }
 
 func TestValidInputFiles_CodeModeFalse_FolderStructureIsCreatedWithCaseSensitiveReplacement(t *testing.T) {
-
-	performStringReplacement(reference_folder, replacement_pairs_file, actual_generated_folder_path, "false")
+	var verbose, isCodeMode = new(bool), new(bool)
+	*verbose, *isCodeMode = false, false
+	performStringReplacement(reference_folder, replacement_pairs_file, actual_generated_folder_path, isCodeMode, verbose)
 
 	assertFolderContentsMatch(actual_generated_folder_path, expected_generated_folder_path_code_mode_false, t)
 	defer teardown()
 }
 
 func TestValidInputFiles_CodeModeTrue_FolderStructureIsCreatedWithAllCaseReplacement(t *testing.T) {
-
-	performStringReplacement(reference_folder, replacement_pairs_file, actual_generated_folder_path, "true")
+	var verbose, isCodeMode = new(bool), new(bool)
+	*verbose, *isCodeMode = true, true
+	performStringReplacement(reference_folder, replacement_pairs_file, actual_generated_folder_path, isCodeMode, verbose)
 
 	assertFolderContentsMatch(actual_generated_folder_path, expected_generated_folder_path_code_mode_true, t)
 	defer teardown()

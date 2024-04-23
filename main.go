@@ -2,41 +2,49 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
 func main() {
+	srcPath := flag.String("s", "", "Path to reference folder - (mandatory).")
+	replacementPair := flag.String("f", "", "Path to replacement pairs file (mandatory).")
+	destPath := flag.String("d", "", "Path to place generated project, which by default is same as reference folder with (generated).")
+	inputCodeMode := flag.Bool("code_mode", false, "Replace the UPPERCASE, lowercase and camelCase occurences of WordToReplace with that of NewWord.")
+	help := flag.Bool("help", false, "Display help message.")
+	verbose := flag.Bool("v", false, "Verbose mode to see detailed logs of processing of your files.")
+	flag.Parse()
 
-	if len(os.Args) != 4 {
-		fmt.Println("Arguments mismatch!\nExpected Usage: program \"path_to_reference_folder\" \"path_to_replacement_pairs_file\" code_mode")
+	if *help {
+		displayHelp()
+		return
+	}
+
+	if len(os.Args) < 2 || *srcPath == "" || *replacementPair == "" {
+		fmt.Println("Arguments mismatch!")
+		displayHelp()
 		os.Exit(1)
 	}
 
-	srcPath := os.Args[1]
-	destPath := srcPath + "(generated)"
-	replacementPair := os.Args[2]
-	inputCodeMode := os.Args[3]
+	if *destPath == "" {
+		*destPath = *srcPath + "(generated)"
+	}
 
-	performStringReplacement(srcPath, replacementPair, destPath, inputCodeMode)
+	performStringReplacement(*srcPath, *replacementPair, *destPath, inputCodeMode, verbose)
 }
 
-func performStringReplacement(srcPath, replacementPair, destPath, inputCodeMode string) {
+func performStringReplacement(srcPath, replacementPair, destPath string, isCodeMode, verbose *bool) {
 
-	isCodeMode, err := strconv.ParseBool(inputCodeMode)
-	if err != nil {
-		fmt.Println("Error: Third argument should be 'true' or 'false' to indicate code_mode")
-		os.Exit(1)
+	if *verbose {
+		fmt.Println("verbose mode enabled")
+		fmt.Println("Path entered for reference: ", srcPath)
+		fmt.Println("File entered for replacement pairs: ", replacementPair)
+		fmt.Println("Code mode opted: ", *isCodeMode)
 	}
-
-	fmt.Println("Path entered for reference: ", srcPath)
-	fmt.Println("File entered for replacement pairs: ", replacementPair)
-	fmt.Println("Code mode opted: ", isCodeMode)
-
 	keyValuePairs := make(map[string]string)
 	keyValueFile, err := os.Open(replacementPair)
 	if err != nil {
@@ -61,21 +69,22 @@ func performStringReplacement(srcPath, replacementPair, destPath, inputCodeMode 
 		return
 	}
 
-	if isCodeMode {
+	if *isCodeMode {
 		fmt.Println("Code mode is activated. Enriching the template map!")
 		keyValuePairs = enrichKeyValueMap(keyValuePairs)
 	}
 
-	err = duplicateFolderStructure(srcPath, destPath, keyValuePairs)
+	err = duplicateFolderStructure(srcPath, destPath, keyValuePairs, verbose)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println("Folder structure duplicated successfully!")
+	fmt.Println("\nFolder structure duplicated successfully!")
+	fmt.Println("Find your generated project at: " + destPath)
 }
 
-func duplicateFolderStructure(srcPath, destPath string, keyValuePairs map[string]string) error {
+func duplicateFolderStructure(srcPath, destPath string, keyValuePairs map[string]string, verbose *bool) error {
 	srcInfo, err := os.Stat(srcPath)
 	if err != nil {
 		return err
@@ -100,11 +109,14 @@ func duplicateFolderStructure(srcPath, destPath string, keyValuePairs map[string
 		destFile := filepath.Join(destPath, getReplacementFileNameOrDefault(keyValuePairs, content.Name()))
 
 		if content.IsDir() {
-			err = duplicateFolderStructure(srcFile, destFile, keyValuePairs)
+			err = duplicateFolderStructure(srcFile, destFile, keyValuePairs, verbose)
 			if err != nil {
 				return err
 			}
 		} else {
+			if *verbose {
+				fmt.Println("Generating file: " + destFile)
+			}
 			err = copyFile(srcFile, destFile, keyValuePairs)
 			if err != nil {
 				return err
@@ -207,4 +219,16 @@ func getReplacementFileNameOrDefault(keyValuePairs map[string]string, key string
 		}
 	}
 	return key
+}
+
+func displayHelp() {
+	fmt.Println("\nUsage:\n\texecutable -s \"path_to_reference_folder\" -f \"path_to_replacement_pairs_file\"")
+	fmt.Println("Description:")
+	fmt.Println("\texecutable: The name of the executable that is downloaded. For example, in Windows it should be used like fsr.exe.")
+	fmt.Println("\tpath_to_reference_folder: The location of the folder to be replicated. Forward/backward slashes must be used appropriately.")
+	fmt.Println("\tpath_to_replacement_pairs_file: The location of the replacement pairs file. File should contain the WordToReplace and NewWord in comma separated format without any spaces.")
+	fmt.Println("Example:\n\t ./fsr \"Documents/My Project/Hello World\" \"Documents/My Project/keyfile.txt\"")
+	fmt.Println("\nOptions:")
+	flag.PrintDefaults()
+	fmt.Print("\n\n")
 }
