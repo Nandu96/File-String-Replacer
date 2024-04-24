@@ -29,7 +29,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          token: ${{ secrets.PAT_TOKEN }}          
-          files: |
-            releases/fsr_*
-            CHANGELOG.md
+          token: ${{ secrets.PAT_TOKEN }}
+          body_path: CHANGELOG.md          
+          files: releases/fsr_*
