@@ -227,7 +227,7 @@ func displayHelp() {
 	fmt.Println("\texecutable: The name of the executable that is downloaded. For example, in Windows it should be used like fsr.exe.")
 	fmt.Println("\tpath_to_reference_folder: The location of the folder to be replicated. Forward/backward slashes must be used appropriately.")
 	fmt.Println("\tpath_to_replacement_pairs_file: The location of the replacement pairs file. File should contain the WordToReplace and NewWord in comma separated format without any spaces.")
-	fmt.Println("Example:\n\t ./fsr \"Documents/My Project/Hello World\" \"Documents/My Project/keyfile.txt\"")
+	fmt.Println("Example:\n\t ./fsr -s \"Documents/My Project/Hello World\" -f \"Documents/My Project/keyfile.txt\"")
 	fmt.Println("\nOptions:")
 	flag.PrintDefaults()
 	fmt.Print("\n\n")
